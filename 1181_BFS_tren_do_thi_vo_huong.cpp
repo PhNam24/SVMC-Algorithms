@@ -8,15 +8,23 @@ using namespace std;
 vector<int> ke[1005];
 int check[1005] = {};
 
-void dfs ( int u )
+void bfs ( int u )
 {
-    check[u] = 1;
-    cout << u << " ";
-    for ( int i : ke[u] )
+    queue<int> q;
+    q.push(u);
+    while(!q.empty())
     {
-        if ( !check[i] )
+        int tmp = q.front();
+        q.pop();
+        cout << tmp << " ";
+        check[tmp] = 1;
+        for ( int i : ke[tmp] ) 
         {
-            dfs(i);
+            if ( !check[i] )
+            {
+                q.push(i);
+                check[i] = 1;
+            }
         }
     }
 }
@@ -42,7 +50,7 @@ int main ()
             ke[x].push_back(y);
             ke[y].push_back(x);
         }
-        dfs(u);
+        bfs(u);
         cout << endl;
     }
     return 0;

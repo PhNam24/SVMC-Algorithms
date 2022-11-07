@@ -7,15 +7,16 @@ using namespace std;
 
 vector<int> ke[1005];
 int check[1005] = {};
+int parent[1005] = {};
 
 void dfs ( int u )
 {
     check[u] = 1;
-    cout << u << " ";
     for ( int i : ke[u] )
     {
         if ( !check[i] )
         {
+            parent[i] = u;
             dfs(i);
         }
     }
@@ -28,21 +29,37 @@ int main ()
     cout.tie(NULL);
     test
     {
-        int v, e, u;
-        cin >>  v >> e >> u;
-        for ( int i = 1; i <= v; i++ )
+        int n, m;
+        cin >> n >> m;
+        for ( int i = 1; i <= n; i++ )
         {
             ke[i].clear();
             check[i] = 0;
+            parent[i] = 0;
         }
-        while(e--)
+        while(m--)
         {
             int x, y;
             cin >> x >> y;
             ke[x].push_back(y);
             ke[y].push_back(x);
         }
-        dfs(u);
+        int q;
+        cin >> q;
+        while(q--)
+        {
+            int start, end;
+            cin >> start >> end;
+            dfs(start);
+            if ( check[end] == 0 ) cout << "NO";
+            else cout << "YES";
+            for ( int i = 1; i <= n; i++ )
+            {
+                check[i] = 0;
+                parent[i] = 0;
+            }
+            cout << endl;
+        }
         cout << endl;
     }
     return 0;
